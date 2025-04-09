@@ -38,22 +38,36 @@ Each phase is recorded and queryable — creating an evolving trail of **cogniti
 
 ## 🔧 Quickstart
 
-1. Clone the repo:
+1. Clone the demo:
 ```bash
 git clone https://github.com/XpectraNet/insight-lifecycle-demo.git
+cd insight-lifecycle-demo
 ```
 
-2. Set up the relay:
+2. Start the symbolic relay (Node.js):
 ```bash
 cd relay
+npm install
 node memoryLifecycleRelay.js
 ```
+🔌 Starts the Insight Lifecycle API at http://localhost:5000/insight/lifecycle
+---
 
-3. Run the agent pipeline:
+3. Run the Agentic Memory Flow:
+In another terminal:
 ```bash
 cd langgraph-app
+pip install -r requirements.txt
 python main.py
 ```
+🧠 This triggers:
+
+- Agent 1: Seeds an insight (memoryPhase: L1)
+- Agent 2: Transforms the thought (L3)
+- Agent 3: Aligns it with symbolic weight (L6)
+
+Each step is stored in ComposeDB — creating a verifiable insight trail.
+---
 
 4. Deploy ComposeDB model (first time only):
 ```bash
@@ -83,7 +97,7 @@ query {
   }
 }
 ```
-
+💡 Powered by Ceramic — every memory is signed, persisted, and composable.
 ---
 
 ## 📖 Docs
