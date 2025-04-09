@@ -50,6 +50,7 @@ cd relay
 npm install
 node memoryLifecycleRelay.js
 ```
+
 🔌 Starts the Insight Lifecycle API at http://localhost:5000/insight/lifecycle
 ---
 
@@ -60,6 +61,7 @@ cd langgraph-app
 pip install -r requirements.txt
 python main.py
 ```
+
 🧠 This triggers:
 
 - Agent 1: Seeds an insight (memoryPhase: L1)
