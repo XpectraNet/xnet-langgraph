@@ -1,0 +1,9 @@
+type Insight @createModel(accountRelation: LIST, description: "Symbolic insight node") {
+  content: String!
+  layer: String!
+  emotion: String
+  remixOf: DID @relation(name: "RemixRelation")
+  validatedBy: [DID] @relation(name: "ValidatorList")
+  tags: [String]
+  createdAt: DateTime
+}
