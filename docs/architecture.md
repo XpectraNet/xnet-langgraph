@@ -9,13 +9,13 @@ Enable LangGraph agents to generate persistent, symbolic memory using the Xpectr
 ## System Overview
 
 ```
-┌──────────────────┐     Insight Lifecycle API    ┌────────────────────────────┐
-│ LangGraph Agents │ ───────────────────────────▶ │ Insight-to-Compose Relay   │
-│   (LLMs)         │                              │      (Node.js)             │
-└──────────────────┘                              └────────────────────────────┘
-                                                         │
-                                                         ▼
-                                             ComposeDB + Ceramic Network
+┌──────────────────┐   Insight Lifecycle API     ┌────────────────────────────┐
+│ LangGraph Agents │ ─────────────────────────▶  │ Insight-to-Compose Relay   │
+│   (LLMs)         │                             │      (Node.js)             │
+└──────────────────┘                             └────────────────────────────┘
+                                                              │
+                                                              ▼
+                                                 ComposeDB + Ceramic Network
 ```
 
 ---
