@@ -124,6 +124,6 @@ Query insights by trail, emotion, validation, phase, or timestamp.
 
 ---
 
-**XpectraNet® — Insight Lifecycle Protocol for Symbolic Agents**
+**XpectraNet® — A Protocol for Shared Memory, Meaning, and Time**
 
 Built for memory. Anchored in thought. Powered by XPDT.
