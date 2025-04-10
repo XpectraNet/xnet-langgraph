@@ -76,10 +76,17 @@ Authenticate with your DID:
 composedb did:authenticate
 ```
 
-Compile and deploy the model:
+Compile and deploy the model to Ceramic Clay:
 ```bash
 cd relay/compose
 composedb composite:compile memory.graphql > model.json
+composedb composite:deploy model.json
+composedb composite:codegen model.json --output=./model-definition.js
+```
+
+Generate the model-definition.js file (used in memoryLifecycleRelay.js):
+```bash
+cd relay/compose
 composedb composite:codegen model.json --output=./model-definition.js
 ```
 
