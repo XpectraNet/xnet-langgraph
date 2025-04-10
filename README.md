@@ -68,11 +68,19 @@ python main.py
 
 🧠 This triggers:
 
-- Agent 1: Seeds an insight (memoryPhase: L1)
-- Agent 2: Transforms the thought (L3)
-- Agent 3: Aligns it with symbolic weight (L6)
+1. **Researcher Agent**  
+   - Seeds a new insight (`memoryPhase: L1`)  
+   - Uses `hooks.mint_insight()` → sends to `/insight/lifecycle`
 
-Each step is stored in ComposeDB — creating a verifiable insight trail.
+2. **Analyst Agent**  
+   - Remixes the original insight (`memoryPhase: L3`)  
+   - Uses `hooks.remix_insight()` with `remixOf` link
+
+3. **Critic Agent**  
+   - Validates the remixed insight (`memoryPhase: L6`)  
+   - Uses `hooks.validate_insight()` with symbolic alignment
+
+Each step logs its action and stores the result in **ComposeDB**, forming a **cognitive lineage** across time.
 
 ---
 
