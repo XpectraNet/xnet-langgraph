@@ -1,4 +1,3 @@
-
 # Insight Lifecycle Workflow – Agent Memory Flow Explained
 
 This document explains how the LangGraph-powered agent pipeline simulates symbolic memory through the XpectraNet Insight Lifecycle Protocol and stores it on ComposeDB.
