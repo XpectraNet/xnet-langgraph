@@ -1,11 +1,24 @@
+# GraphQL Queries – Symbolic Insight Memory
 
-# Querying the Insight Graph – GraphQL Guide
-
-This guide provides example GraphQL queries for interacting with your ComposeDB-powered insight graph via the XpectraNet Insight Lifecycle Protocol.
+This guide provides working GraphQL examples for exploring the symbolic insight graph stored in ComposeDB using the XpectraNet Insight Lifecycle Protocol.
 
 ---
 
-## 🔍 1. Fetch All Recent Insights
+## 🧠 Field Reference
+
+| Field         | Meaning                                 |
+|---------------|------------------------------------------|
+| `content`     | The symbolic expression or insight text  |
+| `memoryPhase` | L1 = Seed, L3 = Transform, L6 = Align    |
+| `emotion`     | Symbolic tone of the insight             |
+| `remixOf`     | Link to the parent insight (if remixed)  |
+| `validatedBy` | DIDs of validators (agents)              |
+| `tags`        | Freeform labels used for filtering       |
+| `createdAt`   | Timestamp for insight creation           |
+
+---
+
+## 📥 Query: All Recent Insights
 
 ```graphql
 query {
@@ -27,16 +40,17 @@ query {
 
 ---
 
-## 🧠 2. Filter by Memory Phase
+## 🔎 Query: By Symbolic Memory Phase (L1, L3, L6)
 
 ```graphql
 query {
-  insightIndex(first: 5, filters: {memoryPhase: "L3"}) {
+  insightIndex(filters: {memoryPhase: "L3"}) {
     edges {
       node {
         content
         memoryPhase
         emotion
+        tags
       }
     }
   }
@@ -45,17 +59,18 @@ query {
 
 ---
 
-## 🌀 3. Explore Remix Lineage
+## 🧬 Query: Explore Remix Lineage
 
 ```graphql
 query {
-  insightIndex(filters: {remixOf: "did:ceramic:your-source-id"}) {
+  insightIndex(filters: {remixOf: "did:ceramic:abc123"}) {
     edges {
       node {
         content
-        emotion
         memoryPhase
+        emotion
         remixOf
+        createdAt
       }
     }
   }
@@ -64,11 +79,11 @@ query {
 
 ---
 
-## ✔️ 4. Filter by Validators
+## ✅ Query: Validated Insights
 
 ```graphql
 query {
-  insightIndex(filters: {validatedBy: ["did:your-validator-did"]}) {
+  insightIndex(filters: {validatedBy: ["did:agent:critic-003"]}) {
     edges {
       node {
         content
@@ -82,11 +97,11 @@ query {
 
 ---
 
-## 🧾 5. Search by Tags or Emotional Alignment
+## 🏷️ Query: Insights by Tags or Emotional Alignment
 
 ```graphql
 query {
-  insightIndex(filters: {tags: ["truth", "symbolic"]}) {
+  insightIndex(filters: {tags: ["trust", "symbolic"]}) {
     edges {
       node {
         content
@@ -100,12 +115,31 @@ query {
 
 ---
 
-## 🛠️ Notes
+## 🧠 Optional: Canonized Insight Retrieval (L7)
 
-- Field: `memoryPhase` refers to the symbolic stage (e.g., L1, L3, L6).
-- Use `remixOf` to traverse trails or remix ancestry.
-- All documents are signed via Ceramic's DID system for traceable authorship.
+```graphql
+query {
+  insightIndex(filters: {memoryPhase: "L7"}) {
+    edges {
+      node {
+        content
+        memoryPhase
+        tags
+        createdAt
+      }
+    }
+  }
+}
+```
 
 ---
 
-**XpectraNet® – Evolving Memory Through Symbolic Graphs**
+## 🔐 ComposeDB Access Notes
+
+- Queries run against your GraphQL endpoint from deployed `memory.graphql`
+- All insight documents are DID-signed and traceable
+- Use the ComposeDB GraphiQL playground or SDK to build visual queries
+
+---
+
+**XpectraNet® — Symbolic Memory for Agentic Collaboration**
