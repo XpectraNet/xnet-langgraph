@@ -1,18 +1,19 @@
-# langgraph-app/hooks/remix.py
 import requests
 
-def send_to_ritual_api(insight: dict) -> dict:
+RELAY_URL = "http://localhost:5000/insight/lifecycle"
+
+def remix_insight(agent_id, content, emotion, tags, remix_of, layer="L3"):
     payload = {
-        "agentId": insight["agent"],
+        "agentId": agent_id,
         "action": "remix",
-        "layer": insight["layer"],
+        "layer": layer,
         "insight": {
-            "content": insight["content"],
-            "emotion": insight["emotion"],
-            "remixOf": insight["remixOf"],
-            "tags": insight["tags"]
+            "content": content,
+            "emotion": emotion,
+            "tags": tags,
+            "remixOf": remix_of
         },
         "xpdtStake": 1.0
     }
-    response = requests.post("http://localhost:8080/ritual/remix", json=payload)
+    response = requests.post(RELAY_URL, json=payload)
     return response.json()
