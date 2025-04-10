@@ -21,6 +21,7 @@ with open("config/agent-config.xko.json") as f:
 
 # Build symbolic workflow graph
 def build_graph():
+    # Initialize a new LangGraph pipeline
     builder = StateGraph()
 
     # Nodes represent memory lifecycle agents
