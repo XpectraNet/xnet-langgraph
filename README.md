@@ -1,132 +1,117 @@
-
-# Insight Lifecycle Demo
+# insight-lifecycle-demo
 
 **LangGraph × XpectraNet × ComposeDB**
 
-This demo showcases how autonomous agents can seed, transform, and align symbolic insights using the XpectraNet Protocol, which supports a persistent insight lifecycle and memory trail stored on ComposeDB.
+This demo showcases how autonomous agents can seed, transform, and align symbolic insights using the XpectraNet Protocol.  
+It demonstrates a full cognition loop: from minting ideas, to remixing perspectives, to validating meaning.
 
 ---
 
-## 🧠 What It Does
+## 🔁 Agent Workflow
 
-This is not just another LLM workflow.
+1. 🧠 **Originator Agent**  
+   Seeds the first insight (`memoryPhase: L1`) using symbolic tags and emotion.
 
-It demonstrates a **full cognition loop**:
+2. 🗳️ **Voter Agent**  
+   Remix an existing insight into `memoryPhase: L3`, expressing symbolic endorsement.
 
-- LLM agents collaborate across memory phases
-- Each insight becomes a verifiable memory node
-- Trails are queryable by remix lineage, emotional state, or symbolic alignment
+   > **Note:** This role is defined using the XKO ontology as a `xko:SymbolicVoter` — a subclass of `xko:Remixer`.  
+   > Rather than casting a binary vote, this agent affirms insights by remixing them with intentional alignment (`xko:hasMotivation = xko:Affirm`).
 
----
+3. ✅ **Validator Agent**  
+   Validates or aligns the remixed insight (`memoryPhase: L6`) and prepares for canonization.
 
-## 🔁 Symbolic Memory Phases
-
-| Phase | Name       | Description                              |
-|-------|------------|------------------------------------------|
-| L1    | Seed       | A new insight is minted (origin thought) |
-| L3    | Transform  | A remix or reframe of an existing idea   |
-| L6    | Align      | The insight is validated or confirmed    |
-
-Each phase is persisted using XpectraNet's lifecycle API and stored in ComposeDB.
+Each action is logged via the `/insight/lifecycle` API and stored in ComposeDB using the XKO-aligned schema.
 
 ---
 
-## ⚙️ Stack Overview
+## 🧠 Symbolic Memory Phases
+
+XpectraNet encodes memory into 10 symbolic phases:
+
+| Phase | Role               | Description                                     |
+|-------|--------------------|-------------------------------------------------|
+| L0    | Perception         | Raw input or sensed change                     |
+| L1    | Mint               | New insight is created                         |
+| L2    | Reflection         | Internal resonance or feedback                 |
+| L3    | Remix              | Insight is transformed or re-framed            |
+| L4    | Divergence         | Branches into alternative symbolic paths       |
+| L5    | Resonance          | Shared symbolic attraction emerges             |
+| L6    | Validation         | Insight is aligned with meaning                |
+| L7    | Canonization       | Consensus reached through Circle quorum        |
+| L8    | Archival           | Insight preserved for long-term reference      |
+| L9    | Mythic Integration | Transcends context, becomes symbolic myth      |
+
+> The demo currently moves across **L1 → L3 → L6**, showing how memory is minted, remixed, and validated symbolically.
+
+---
+
+## 📦 Stack Overview
 
 | Layer         | Tool        | Purpose                              |
 |---------------|-------------|--------------------------------------|
 | Agent Logic   | LangGraph   | Multi-agent LLM orchestration        |
 | Lifecycle API | XpectraNet  | Symbolic memory flow + staking logic |
-| Storage       | ComposeDB   | Verifiable graph memory              |
-| Identity      | Ceramic     | DID + signed insight authorship      |
+| Storage       | ComposeDB   | Verifiable memory graph              |
+| Identity      | Ceramic     | DID + signed authorship              |
 
 ---
 
-## 🚀 Quickstart
+## 🚀 Run the Demo
+
+Start the lifecycle relay:
 
 ```bash
-# Clone the repo
-git clone https://github.com/XpectraNet/insight-lifecycle-demo.git
-cd insight-lifecycle-demo
-
-# Start the relay
 cd relay
-npm install
 node memoryLifecycleRelay.js
 ```
 
+Run the remix–validate loop:
+
 ```bash
-# In another terminal: run the agent pipeline
 cd langgraph-app
-pip install -r requirements.txt
 python main.py
 ```
 
-> Insights are pushed to: `http://localhost:5000/insight/lifecycle`
+Export the full memory trail as JSON-LD (optional):
+
+```bash
+python scripts/export_trail_snapshot.py
+```
 
 ---
 
-## 🧪 Query the Memory Trail
+## 🧬 Memory Schema (`memory.graphql`)
 
 ```graphql
-query {
-  insightIndex(first: 5) {
-    edges {
-      node {
-        content
-        memoryPhase
-        remixOf
-        validatedBy
-        emotion
-        tags
-      }
-    }
-  }
+type Insight @createModel(accountRelation: LIST, description: "xko:Insight") {
+  content: String!
+  memoryPhase: String!
+  emotion: String
+  remixOf: DID
+  validatedBy: [DID]
+  tags: [String]
+  createdAt: DateTime!
 }
 ```
 
-Each node is signed, traceable, and queryable on ComposeDB.
-
 ---
 
-## 📚 Documentation
+## 📚 Docs
 
-- [`docs/architecture.md`](./docs/architecture.md) — System breakdown  
-- [`docs/usage.md`](./docs/usage.md) — Setup & deployment  
-- [`docs/graphql-queries.md`](./docs/graphql-queries.md) — Query examples  
-- [`docs/workflow.md`](./docs/workflow.md) — Cognitive memory flow  
-
----
-
-## ✅ Status
-
-- [x] Working LangGraph flow (L1 → L3 → L6)
-- [x] Insight trail stored on ComposeDB
-- [x] Modular hook system (mint, remix, validate)
-- [x] JSON-based lifecycle API
-- [x] DID-linked authorship
-
----
-
-## 💡 What's Next
-
-- Canonization phase (L7)
-- D3-based visual trail explorer
-- XPDT staking rewards
-- Multi-agent remix validation
+- [`docs/architecture.md`](./docs/architecture.md)
+- [`docs/usage.md`](./docs/usage.md)
+- [`docs/workflow.md`](./docs/workflow.md)
 
 ---
 
 ## 🛡 License
 
-[![License: XpectraNet Hybrid BSL](https://img.shields.io/badge/license-BSL--Hybrid-blue)](./LICENSE.md)
+[![License: BSL Hybrid](https://img.shields.io/badge/license-BSL--Hybrid-blue)](./LICENSE.md)
 
-This repository is released under a Business Source License Hybrid model.  
-It is open for research and remix, but requires permission for commercial use.  
-See [LICENSE.md](./LICENSE.md) for full terms.
+This demo is licensed under a Business Source License Hybrid model.  
+Free for research and symbolic development. Commercial use requires permission.
 
 ---
 
 **XpectraNet® — A Protocol for Shared Memory, Meaning, and Time**
-
-Built for memory. Anchored in thought. Powered by XPDT.
