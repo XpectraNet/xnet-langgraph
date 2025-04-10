@@ -25,28 +25,21 @@ const compose = new ComposeClient({
 // POST /insight/lifecycle — receives symbolic insight data
 app.post('/insight/lifecycle', async (req, res) => {
   try {
-    const {
-      content,
-      memoryPhase,
-      emotion,
-      remixOf,
-      validatedBy,
-      tags,
-    } = req.body;
+    const { agentId, action, layer, insight, xpdtStake } = req.body;
 
     // Basic validation
-    if (!content || !memoryPhase) {
-      return res.status(400).json({ error: 'Missing required fields: content, memoryPhase' });
+    if (!agentId || !action || !layer || !insight || !insight.content) {
+      return res.status(400).json({ error: 'Missing required fields' });
     }
 
     // Prepare input payload for ComposeDB
     const input = {
-      content,
-      memoryPhase,
-      emotion: emotion || null,
-      remixOf: remixOf || null,
-      validatedBy: validatedBy || [],
-      tags: tags || [],
+      content: insight.content,
+      memoryPhase: layer,
+      emotion: insight.emotion || null,
+      remixOf: insight.remixOf || null,
+      validatedBy: insight.validatedBy || [],
+      tags: insight.tags || [],
       createdAt: new Date().toISOString(),
     };
 
