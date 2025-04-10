@@ -183,4 +183,6 @@ For validator overlays:
 
 ---
 
-**XpectraNet® — Symbolic Memory for Agentic Collaboration**
+**XpectraNet® — A Protocol for Shared Memory, Meaning, and Time**
+
+Built for memory. Anchored in thought. Powered by XPDT.
