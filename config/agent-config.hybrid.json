@@ -1,0 +1,86 @@
+{
+  "@context": "https://xpectranet.org/xko#",
+  "agents": [
+    {
+      "agentId": "did:agent:x0-researcher",
+      "role": "Researcher",
+      "action": "mint",
+      "memoryPhase": "L1",
+      "emotionProfile": [
+        "Curiosity",
+        "Openness"
+      ],
+      "tags": [
+        "seed",
+        "thought"
+      ],
+      "@type": "xko:Originator",
+      "xko:agentId": "did:agent:x0-researcher",
+      "xko:role": "Researcher",
+      "xko:action": "xko:mint",
+      "xko:memoryPhase": "xko:L1",
+      "xko:emotionProfile": [
+        "xko:Curiosity",
+        "xko:Openness"
+      ],
+      "xko:tags": [
+        "xko:seed",
+        "xko:thought"
+      ]
+    },
+    {
+      "agentId": "did:agent:x0-analyst",
+      "role": "Analyst",
+      "action": "remix",
+      "memoryPhase": "L3",
+      "emotionProfile": [
+        "Exploration",
+        "Tension"
+      ],
+      "tags": [
+        "remix",
+        "transform"
+      ],
+      "@type": "xko:Remixer",
+      "xko:agentId": "did:agent:x0-analyst",
+      "xko:role": "Analyst",
+      "xko:action": "xko:remix",
+      "xko:memoryPhase": "xko:L3",
+      "xko:emotionProfile": [
+        "xko:Exploration",
+        "xko:Tension"
+      ],
+      "xko:tags": [
+        "xko:remix",
+        "xko:transform"
+      ]
+    },
+    {
+      "agentId": "did:agent:x0-critic",
+      "role": "Critic",
+      "action": "validate",
+      "memoryPhase": "L6",
+      "emotionProfile": [
+        "Clarity",
+        "Alignment"
+      ],
+      "tags": [
+        "validate",
+        "refine"
+      ],
+      "@type": "xko:Validator",
+      "xko:agentId": "did:agent:x0-critic",
+      "xko:role": "Critic",
+      "xko:action": "xko:validate",
+      "xko:memoryPhase": "xko:L6",
+      "xko:emotionProfile": [
+        "xko:Clarity",
+        "xko:Alignment"
+      ],
+      "xko:tags": [
+        "xko:validate",
+        "xko:refine"
+      ]
+    }
+  ]
+}
