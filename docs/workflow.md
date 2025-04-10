@@ -1,57 +1,82 @@
-# Insight Lifecycle Workflow – Agent Memory Flow Explained
+# 🧠 Symbolic Memory Lifecycle — XpectraNet Demo (L1 → L3 → L6)
 
-This document explains how the LangGraph-powered agent pipeline simulates symbolic memory through the XpectraNet Insight Lifecycle Protocol and stores it on ComposeDB.
-
----
-
-## 🔄 What Happens in This Workflow?
-
-This LangGraph-powered flow demonstrates how agents evolve symbolic insights using the **XpectraNet Insight Lifecycle Protocol**.
-
-Each step calls `POST /insight/lifecycle` via dedicated Python hooks (`mint`, `remix`, `validate`) and stores memory into ComposeDB.
+This demo simulates how insights evolve through structured symbolic memory phases —  
+minted by researchers, remixed by analysts, and validated by critics — using the Xpectra Knowledge Ontology (XKO) and stored in ComposeDB.
 
 ---
 
-### 🧠 Step-by-Step Lifecycle
+## 🔄 Agent Loop (LangGraph)
 
-#### 1. 🧪 Researcher Agent
-- **Action:** Seeds a new insight
-- **Phase:** `memoryPhase: L1`
-- **Hook:** `mint_insight()`
-- **Output:** Creates a new symbolic thought
-- **Tags:** `["seed", "symbolic"]`
-
-#### 2. 🔁 Analyst Agent
-- **Action:** Transforms the original insight
-- **Phase:** `memoryPhase: L3`
-- **Hook:** `remix_insight()`
-- **Output:** New interpretation linked by `remixOf`
-- **Tags:** `["structure", "cognition"]`
-
-#### 3. ✅ Critic Agent
-- **Action:** Validates or aligns the transformed insight
-- **Phase:** `memoryPhase: L6`
-- **Hook:** `validate_insight()`
-- **Output:** Adds symbolic weight + validator signature
-- **Tags:** `["validated", "aligned"]`
+```
+Researcher (L1)
+   ↓
+Analyst (L3)
+   ↓
+Critic (L6)
+   ↺
+   ↳ Analyst (L3) (loop continues...)
+```
 
 ---
 
-### 📦 Final Result
+## 🧠 Agent Roles (Defined via XKO)
 
-- All insights are persisted to **ComposeDB**
-- Each insight node includes:
-  - `content`
-  - `emotion`
-  - `memoryPhase`
-  - `remixOf` or `validatedBy` lineage
-- The full memory trail is:
-  - ✅ Verifiable
-  - 🔍 Queryable
-  - 🔁 Evolvable
+| Role       | XKO Type           | Phase | Action           |
+|------------|--------------------|--------|------------------|
+| Researcher | xko:Originator     | L1     | mint_insight()   |
+| Analyst    | xko:Remixer        | L3     | remix_insight()  |
+| Critic     | xko:Validator      | L6     | validate_insight() |
+
+Each role is defined via `agent-config.xko.json` using XKO ontology tags.
 
 ---
 
-**XpectraNet® — A Protocol for Shared Memory, Meaning, and Time**
+## ⛓️ Memory Evolution Flow
 
-Built for memory. Anchored in thought. Powered by XPDT.
+1. **Seed**: `Researcher` generates insight → `memoryPhase: xko:L1`
+2. **Remix**: `Analyst` reframes it → `xko:remixOf: previous_id`, `memoryPhase: xko:L3`
+3. **Validate**: `Critic` affirms remix → `xko:validatedBy`, `memoryPhase: xko:L6`
+4. **Repeat**: Analyst continues remix trail with deeper interpretation
+
+---
+
+## 🧬 Insight Graph Stored in ComposeDB
+
+- Schema: `memory.graphql` defines an `xko:Insight`
+- Each lifecycle POST is routed through:
+  - `POST /insight/lifecycle`
+  - → Relay (Node.js)
+  - → ComposeDB mutation
+
+---
+
+## ✅ Why This Matters
+
+This symbolic memory lifecycle:
+- Encodes provenance (`remixOf`)
+- Embeds trust (`validatedBy`)
+- Anchors emotion, layer, and time
+- Evolves meaning — not just state
+
+---
+
+## ✨ Example Export
+
+Exported trail (via `scripts/export_trail_snapshot.py`) outputs a JSON-LD snapshot:
+
+```json
+{
+  "@context": "https://xpectranet.org/xko#",
+  "@type": "xko:Insight",
+  "xko:memoryPhase": "xko:L3",
+  "xko:remixOf": "did:ceramic:xyz...",
+  "xko:validatedBy": ["did:agent:x0-critic"]
+}
+```
+
+---
+
+**This is not just memory.  
+It is cognition, with structure.**
+
+**XpectraNet® — Evolving Thought Through Symbolic Trails**
