@@ -80,7 +80,7 @@ Compile and deploy the model:
 ```bash
 cd relay/compose
 composedb composite:compile memory.graphql > model.json
-composedb composite:deploy model.json
+composedb composite:codegen model.json --output=./model-definition.js
 ```
 
 > 🔗 After deployment, your GraphQL endpoint is live at `http://localhost:7007/graphql` or from your Ceramic node provider.
