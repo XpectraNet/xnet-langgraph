@@ -142,4 +142,45 @@ query {
 
 ---
 
+## 🌐 Advanced: Query for Insight Trail Graph (Lineage Map)
+
+Use this query to visualize a directed graph of insights where each node links to its ancestor (`remixOf`).
+
+```graphql
+query {
+  insightIndex(first: 100) {
+    edges {
+      node {
+        id
+        content
+        memoryPhase
+        remixOf
+        tags
+        createdAt
+      }
+    }
+  }
+}
+```
+
+### 🔎 How to Use
+
+- Load this result into D3.js or a graph visualization tool
+- Treat `id` as the node
+- Use `remixOf` as the edge (linking parent → child)
+- Filter by `memoryPhase` or `tags` for layered layout
+
+---
+
+## 🧩 Tip
+
+For timeline-based trails:
+- Sort insights by `createdAt`
+- Highlight `memoryPhase` with color or node size
+
+For validator overlays:
+- Query `validatedBy` field and layer confirmation count visually
+
+---
+
 **XpectraNet® — Symbolic Memory for Agentic Collaboration**
