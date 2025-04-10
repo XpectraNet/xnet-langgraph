@@ -3,19 +3,26 @@
 
 This guide helps you set up and test the full LangGraph × XpectraNet × ComposeDB stack to experience symbolic memory with remix lineage, validation, and decentralized storage.
 
+
 ---
 
 ## 🧩 Prerequisites
 
-- Python 3.8+
-- Node.js 18+
-- Ceramic CLI (`npm install -g @composedb/cli`)
-- Git
-- Docker (optional, for Ceramic devnet)
+Make sure you have the following installed:
+
+- **Python 3.8+**
+- **Node.js v18+**
+- **npm**
+- **Ceramic CLI** → `npm install -g @composedb/cli`
+- **Git**
+- **Ceramic Daemon** (Clay testnet node or local devnet)
+- (Optional) Docker (for containerized Ceramic or graph tools)
+
+> ℹ️ You’ll also need an authenticated DID to write to ComposeDB (use `composedb did:authenticate`)
 
 ---
 
-## 🛠️ Setup Steps
+## 📦 Installation & Setup
 
 ### 1. Clone the Repository
 
@@ -44,7 +51,7 @@ cd ../relay
 npm install
 ```
 
-Set up your `.env` (optional, depending on ComposeClient config):
+Create your `.env` if needed:
 ```bash
 cp .env.example .env
 ```
@@ -53,23 +60,30 @@ cp .env.example .env
 
 ### 4. Deploy the Insight Model to ComposeDB
 
+Install the Ceramic CLI (if not already):
+```bash
+npm install -g @composedb/cli
+```
+
 Start Ceramic daemon (in a separate terminal):
 
 ```bash
 ceramic daemon --network clay
 ```
 
-Authenticate:
+Authenticate with your DID:
 ```bash
 composedb did:authenticate
 ```
 
-Deploy the model:
+Compile and deploy the model:
 ```bash
 cd relay/compose
 composedb composite:compile memory.graphql > model.json
 composedb composite:deploy model.json
 ```
+
+> 🔗 After deployment, your GraphQL endpoint is live at `http://localhost:7007/graphql` or from your Ceramic node provider.
 
 ---
 
@@ -80,7 +94,7 @@ cd ../
 node memoryLifecycleRelay.js
 ```
 
-The server should listen on `http://localhost:5000`
+> 🔁 Your lifecycle relay is now listening at: `http://localhost:5000/insight/lifecycle`
 
 ---
 
@@ -91,23 +105,23 @@ cd ../langgraph-app
 python main.py
 ```
 
-This triggers:
+🧠 This triggers:
 
-- Agent 1: seeds an insight (Phase L1)
-- Agent 2: transforms insight (L3 remix)
-- Agent 3: validates it (L6 alignment)
+- Agent 1: Seeds an insight (`memoryPhase: L1`)
+- Agent 2: Transforms the thought (`L3`)
+- Agent 3: Aligns it with symbolic weight (`L6`)
 
-Each step is sent to the relay → ComposeDB → stored as symbolic memory.
+Each step is stored in **ComposeDB** — creating a verifiable insight trail.
 
 ---
 
-## 🧪 Test Your Trail
+## 🧪 Query & Visualize the Memory Trail
 
-### Query via GraphQL Playground or ComposeDB endpoint:
+Use the ComposeDB GraphQL endpoint:
 
 ```graphql
 query {
-  insightIndex(first: 5, filters: {memoryPhase: "L3"}) {
+  insightIndex(first: 5) {
     edges {
       node {
         content
@@ -116,20 +130,39 @@ query {
         remixOf
         validatedBy
         tags
+        createdAt
       }
     }
   }
 }
 ```
 
----
-
-## 🔍 Tips
-
-- For DIDs, use Ceramic’s `did:key` or connect with `@composedb/devtools`
-- Customize agents to test different emotional states or memory phase mappings
-- Fork the repo and plug into your LangGraph projects
+> You can also visualize trails using D3.js by linking `id` and `remixOf`.
 
 ---
 
-**XpectraNet® – Symbolic Memory for Agentic Collaboration**
+## ✅ Successful Run Checklist
+
+✔ Node relay is running at `http://localhost:5000/insight/lifecycle`  
+✔ Ceramic daemon is active (testnet or local)  
+✔ `memory.graphql` model deployed and registered  
+✔ LangGraph flow executed and printed: `Final Insight ID: ...`  
+✔ Insights visible in ComposeDB using GraphQL queries  
+
+You're now running a working symbolic memory system for multi-agent cognition.
+
+---
+
+## 📚 Bonus: Understanding memoryPhase
+
+| Phase | Label       | Description                             |
+|-------|-------------|-----------------------------------------|
+| L1    | Seed        | Original insight or perception          |
+| L3    | Transform   | Reframed or structurally evolved thought|
+| L6    | Align       | Validated or symbolically confirmed     |
+| L7    | Resolve     | Canonized insight (finalized)           |
+| L8    | Close       | Archived insight                        |
+
+---
+
+**XpectraNet® – Cognitive Memory for Symbolic Collaboration**
