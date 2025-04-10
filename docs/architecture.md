@@ -1,38 +1,87 @@
-# LangGraph × XpectraNet × ComposeDB: Architecture Overview
 
-## Vision
+# Insight Lifecycle Demo – Architecture Overview
 
-Enable LangGraph agents to generate persistent, symbolic memory using the XpectraNet Protocol — where every thought is seeded, transformed, aligned, and resolved into a decentralized graph memory structure powered by ComposeDB.
+This guide breaks down the architecture of the LangGraph × XpectraNet × ComposeDB system — a symbolic memory pipeline where LLM agents can co-author, remix, and validate insights with traceable semantic lineage.
 
 ---
 
-## Architecture Breakdown
+## 🧠 Vision
 
-### LangGraph Agents (Python)
-- Use LLMs to perform reasoning steps.
-- Each step emits a symbolic action:
-  - `seed`, `transform`, `align`
-- Sends output to the `/insight/lifecycle` endpoint of the Node relay.
+To enable agentic systems to think together — not just by generating responses, but by contributing to a persistent, queryable, decentralized graph of symbolic memory.
 
-**Dependencies:**
-```bash
-pip install langgraph openai langchain requests
+---
+
+## 📐 High-Level System Diagram
+
+```
+┌──────────────────┐     Insight Lifecycle API     ┌────────────────────────────┐
+│ LangGraph Agents │ ────────────────────────────▶ │ Insight-to-Compose Relay   │
+│   (LLMs)         │                              │      (Node.js)             │
+└──────────────────┘                              └────────────────────────────┘
+                                                         │
+                                                         ▼
+                                             ComposeDB + Ceramic Network
 ```
 
-### Insight-to-Compose Relay (Node.js)
-- Receives symbolic memory lifecycle events (seed, transform, align) from LangGraph agents.
-- Maps symbolic structure to ComposeDB GraphQL mutation.
-- Connects to Ceramic network (Clay testnet).
+---
 
-**Dependencies:**
-```bash
-npm install express @ceramicnetwork/http-client graphql-request
+## 🧱 Stack Layers
+
+| Layer         | Tool        | Role                                             |
+|---------------|-------------|--------------------------------------------------|
+| Agent Logic   | LangGraph   | LLM agent orchestration                          |
+| Protocol      | XpectraNet  | Defines insight lifecycle, memory phases, trail  |
+| Storage       | ComposeDB   | Stores symbolic memory as linked documents       |
+| Identity      | Ceramic     | DID-backed identity and stream signing           |
+
+---
+
+## 🔁 Symbolic Flow: Seed → Transform → Align
+
+### 1. `researcher_agent`
+- Seeds an original thought (`memoryPhase: L1`)
+- Hook: `mint_insight()`
+
+### 2. `analyst_agent`
+- Transforms insight (`memoryPhase: L3`)
+- Hook: `remix_insight()` + `remixOf`
+
+### 3. `critic_agent`
+- Validates transformed thought (`memoryPhase: L6`)
+- Hook: `validate_insight()` + `validatedBy`
+
+Each step persists memory into ComposeDB via the relay.
+
+---
+
+## 🔗 Relay: `memoryLifecycleRelay.js`
+
+- Lightweight Node.js API server
+- Accepts POST `/insight/lifecycle`
+- Transforms agent insight payloads into `createInsight` GraphQL mutations
+- Uses `ComposeClient` to write to Ceramic Clay testnet
+
+Example payload:
+
+```json
+{
+  "agentId": "did:agent:001",
+  "action": "remix",
+  "layer": "L3",
+  "insight": {
+    "content": "Remixed idea",
+    "emotion": "Tension",
+    "tags": ["reframe", "symbolic"],
+    "remixOf": "did:ceramic:abc123"
+  },
+  "xpdtStake": 1.0
+}
 ```
 
-### ComposeDB (GraphQL + Ceramic)
-- Stores symbolic insights with remix lineage.
-- Each record is signed with a DID (agent identity).
-- Schema-defined insight structure:
+---
+
+## 🧬 ComposeDB Schema
+
 ```graphql
 type Insight @createModel(accountRelation: LIST) {
   content: String!
@@ -45,71 +94,36 @@ type Insight @createModel(accountRelation: LIST) {
 }
 ```
 
-**To deploy:**
-```bash
-composedb composite:compile memory.graphql > model.json
-composedb composite:deploy model.json
-```
+Query insights by trail, emotion, validation, phase, or timestamp.
 
 ---
 
-## Flow Summary
+## 🛠 Developer Notes
 
-1. `ResearcherAgent` seeds a Phase 1 insight.
-2. `AnalystAgent` transforms it into Phase 3.
-3. `CriticAgent` aligns the insight as Phase 6.
-4. All symbolic states are written to ComposeDB as cognitive lineage.
-
----
-
-## STEP-BY-STEP DEEP DIVE
-
-### 1. LangGraph (Agentic Cognition)
-- Why: Orchestrates multiple LLM agents in a structured sequence.
-- What Happens: Each agent runs a reasoning step and produces an insight.
-- Under the Hood: LangGraph uses a directed state graph; nodes are async functions.
-- Why It’s Widely Adopted: It’s the standard for multi-agent workflows in LangChain/OpenAI ecosystems.
-
-### 2. Insight Lifecycle Relay (Symbolic Bridge)
-- Why: Converts symbolic agent output into structured memory.
-- What Happens: LangGraph POSTs JSON to `/insight/lifecycle`. The relay formats + forwards to ComposeDB.
-- Under the Hood: It parses payloads, maps fields (e.g., `remixOf`, `validatedBy`) and signs data.
-- Why It’s Widely Adopted: Node.js relays are ideal for connecting LLM logic to decentralized storage layers.
-
-### 3. ComposeDB (Decentralized Memory Graph)
-- Why: Stores verifiable symbolic memory with full lineage + identity.
-- What Happens: Insights are stored as documents with `@createModel`. You can query or traverse trails.
-- Under the Hood: Ceramic streams track version history; ComposeDB gives a GraphQL API.
-- Why It’s Widely Adopted: Projects like Lens, Gitcoin, and FWB use ComposeDB for user-owned, queryable memory.
-
-### 4. Querying the Graph (Cognitive Lineage)
-- Why: Allows explorers, validators, or agents to traverse cognition history.
-- What Happens: You query insights by `memoryPhase`, `remixOf`, `tags`, or emotional alignment.
-- Under the Hood: It’s GraphQL — composable, filterable, and extendable.
-- Why It’s Widely Adopted: Ecosystem tools like Tableland, Lit, and IDX work seamlessly with this structure.
+- Agents use `StateGraph` to define ordered symbolic logic
+- Hooks modularize lifecycle API calls (mint/remix/validate)
+- ComposeDB allows full-text insight graph queries with traceable lineage
 
 ---
 
-## Why This Stack Works
+## ✅ Benefits
 
-| Layer         | Tool        | Purpose                              | Used By                        |
-|---------------|-------------|--------------------------------------|--------------------------------|
-| Agent Logic   | LangGraph   | Multi-agent LLM orchestration        | LangChain, Microsoft, OpenAI   |
-| Insight Lifecycle | XpectraNet  | Symbolic cognition protocol              | You (foundationally unique)    |
-| Storage       | ComposeDB   | Verifiable graph memory              | Gitcoin, Lens, FWB             |
-| Identity      | Ceramic     | DID + signed insight actions         | Decentralized infra projects   |
+- Verifiable symbolic cognition
+- Multi-agent insight evolution
+- Queryable memory trails
+- Open composability (D3.js, XPDT staking, Circle consensus)
 
 ---
 
-## Next Steps
+## 📌 Next Enhancements
 
-- [ ] Add resolve (canonization) and close (archival) phases.
-- [ ] Visualize insight lineage via D3.
-- [ ] Enable XPDT staking + Circle consensus.
-- [ ] Host relay publicly for live trails.
+- Canonization and archival (L7, L8)
+- XPDT-powered incentive layers
+- Validator circles and remix scoring
+- Insight trail visualizer (D3)
 
 ---
 
-**XpectraNet® — Insight Lifecycle Protocol for Agentic Collaboration**
+**XpectraNet® — Insight Lifecycle Protocol for Symbolic Agents**
 
-Built for agents. Anchored in thought. Powered by XPDT.
+Built for memory. Anchored in thought. Powered by XPDT.
