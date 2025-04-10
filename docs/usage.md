@@ -165,4 +165,6 @@ You're now running a working symbolic memory system for multi-agent cognition.
 
 ---
 
-**XpectraNet® – Cognitive Memory for Symbolic Collaboration**
+**XpectraNet® — A Protocol for Shared Memory, Meaning, and Time**
+
+Built for memory. Anchored in thought. Powered by XPDT.
