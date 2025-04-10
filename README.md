@@ -124,6 +124,7 @@ This is XpectraNet.
 - [`docs/architecture.md`](./docs/architecture.md) – Full system breakdown  
 - [`docs/usage.md`](./docs/usage.md) – Deployment + testing guide  
 - [`docs/graphql-queries.md`](./docs/graphql-queries.md) – Querying the insight graph  
+- [`docs/workflow.md`](./docs/workflow.md) – Step-by-step symbolic memory lifecycle flow  
 
 ---
 
