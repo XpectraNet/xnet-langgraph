@@ -36,20 +36,20 @@ Each phase is recorded and queryable — creating an evolving trail of **cogniti
 
 ---
 
-## 🔧 Deploy ComposeDB model (first time only):
-```bash
-composedb composite:compile memory.graphql > model.json
-composedb composite:deploy model.json
-```
----
-
 ## 🚀 Quickstart: Try It in Minutes
 ```bash
 # 1. Clone the demo:
 git clone https://github.com/XpectraNet/insight-lifecycle-demo.git
 cd insight-lifecycle-demo
 
-# 2. Start the symbolic relay (Node.js):
+# 2. Deploy ComposeDB model (first time only):
+cd ceramic
+composedb composite:compile memory.graphql > model.json
+composedb composite:deploy model.json
+
+# Make sure you have a valid model-definition.js (generated from your memory.graphql)
+
+# 3. Start the symbolic relay (Node.js):
 cd relay
 npm install
 node memoryLifecycleRelay.js
