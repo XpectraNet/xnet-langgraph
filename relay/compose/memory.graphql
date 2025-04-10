@@ -1,9 +1,12 @@
-type Insight @createModel(accountRelation: LIST, description: "Symbolic insight node for XpectraNet lifecycle memory") {
-  content: String!
-  memoryPhase: String!
-  emotion: String
-  remixOf: DID
-  validatedBy: [DID]
-  tags: [String]
-  createdAt: DateTime!
+# XKO-aligned symbolic memory schema for XpectraNet
+# Each field maps to an XKO ontology property
+
+type Insight @createModel(accountRelation: LIST, description: "xko:Insight") {
+  content: String!          # xko:content
+  memoryPhase: String!      # xko:memoryPhase
+  emotion: String           # xko:emotion
+  remixOf: DID              # xko:remixOf
+  validatedBy: [DID]        # xko:validatedBy
+  tags: [String]            # xko:tag
+  createdAt: DateTime!      # xko:timestamp
 }
