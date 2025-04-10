@@ -20,7 +20,7 @@ pip install langgraph openai langchain requests
 ```
 
 ### Insight-to-Compose Relay (Node.js)
-- Accepts JSON payloads from agents.
+- Receives symbolic memory lifecycle events (seed, transform, align) from LangGraph agents.
 - Maps symbolic structure to ComposeDB GraphQL mutation.
 - Connects to Ceramic network (Clay testnet).
 
