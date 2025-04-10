@@ -85,5 +85,3 @@ This demo showcases how symbolic memory can:
 ---
 
 **XpectraNet® — A Protocol for Shared Memory, Meaning, and Time**
-
-Built for memory. Anchored in thought. Powered by XPDT.
