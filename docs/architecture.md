@@ -1,117 +1,77 @@
+# LangGraph × XpectraNet × ComposeDB: Architecture Overview
 
-# Insight Lifecycle Demo – Architecture Overview
+## Vision
 
-This guide breaks down the architecture of the LangGraph × XpectraNet × ComposeDB system — a symbolic memory pipeline where LLM agents can co-author, remix, and validate insights with traceable semantic lineage.
-
----
-
-## 🧠 Vision
-
-To enable agentic systems to think together — not just by generating responses, but by contributing to a persistent, queryable, decentralized graph of symbolic memory.
+Enable autonomous agents to mint, remix, and validate symbolic memory using the XpectraNet protocol —  
+recording each step in a decentralized graph (ComposeDB) with structure grounded in the Xpectra Knowledge Ontology (XKO).
 
 ---
 
-## 📐 High-Level System Diagram
+## System Overview
 
 ```
-┌──────────────────┐     Insight Lifecycle API     ┌────────────────────────────┐
-│ LangGraph Agents │ ───────────────────────────▶ │ Insight-to-Compose Relay   │
-│   (LLMs)         │                               │      (Node.js)             │
-└──────────────────┘                               └────────────────────────────┘
-                                                                │
-                                                                ▼
-                                                    ComposeDB + Ceramic Network
+┌───────────────────────────────┐    /insight/lifecycle     ┌─────────────────────────────┐
+│ LangGraph Agent Loop.         │ ────────────────────────▶ │ Node.js Relay (Ritual Proxy)│
+│ (Research → Remix → Validate) │                           └─────────────────────────────┘
+└───────────────────────────────┘
+               │                                                          │
+               ▼                                                          ▼
+       Agent Config (XKO)                                    ComposeDB (GraphQL + Ceramic)
 ```
 
 ---
 
-## 🧱 Stack Layers
+## Components
 
-| Layer         | Tool        | Role                                             |
-|---------------|-------------|--------------------------------------------------|
-| Agent Logic   | LangGraph   | LLM agent orchestration                          |
-| Protocol      | XpectraNet  | Defines insight lifecycle, memory phases, trail  |
-| Storage       | ComposeDB   | Stores symbolic memory as linked documents       |
-| Identity      | Ceramic     | DID-backed identity and stream signing           |
+### LangGraph Agents
+- Run symbolic cognition loop:  
+  `Researcher (L1) → Analyst (L3) → Critic (L6)`
+- Each node performs a lifecycle action: `mint`, `remix`, or `validate`
+- Pass shared memory state forward
 
----
+### XKO Agent Config
+- Each agent is typed via XKO:
+  - `@type`: `xko:Originator`, `xko:Remixer`, `xko:Validator`
+  - `xko:memoryPhase`: L1, L3, L6
+  - `xko:emotionProfile`, `xko:tags`
+- Used in `agent-config.xko.json`
 
-## 🔁 Symbolic Flow: Seed → Transform → Align
+### Relay Server
+- Receives `xko:Insight` payloads at `/insight/lifecycle`
+- Normalizes JSON-LD → ComposeDB mutation
+- Posts insights with:
+  - `content`, `memoryPhase`, `remixOf`, `validatedBy`, `tags`, `emotion`, `createdAt`
 
-### 1. `researcher_agent`
-- Seeds an original thought (`memoryPhase: L1`)
-- Hook: `mint_insight()`
-
-### 2. `analyst_agent`
-- Transforms insight (`memoryPhase: L3`)
-- Hook: `remix_insight()` + `remixOf`
-
-### 3. `critic_agent`
-- Validates transformed thought (`memoryPhase: L6`)
-- Hook: `validate_insight()` + `validatedBy`
-
-Each step persists memory into ComposeDB via the relay.
-
----
-
-## 🔗 Relay: `memoryLifecycleRelay.js`
-
-- Lightweight Node.js API server
-- Accepts POST `/insight/lifecycle`
-- Transforms agent insight payloads into `createInsight` GraphQL mutations
-- Uses `ComposeClient` to write to Ceramic Clay testnet
-
-Example payload:
-
-```json
-{
-  "agentId": "did:agent:001",
-  "action": "remix",
-  "layer": "L3",
-  "insight": {
-    "content": "Remixed idea",
-    "emotion": "Tension",
-    "tags": ["reframe", "symbolic"],
-    "remixOf": "did:ceramic:abc123"
-  },
-  "xpdtStake": 1.0
-}
-```
+### ComposeDB + Ceramic
+- Each insight becomes a verifiable node in a persistent symbolic graph
+- Fields match `memory.graphql` model
+- Queryable via GraphQL and exportable as JSON-LD
 
 ---
 
-## 🧬 ComposeDB Schema
+## Data Flow Example
 
-```graphql
-type Insight @createModel(accountRelation: LIST) {
-  content: String!
-  memoryPhase: String!
-  emotion: String
-  remixOf: DID
-  validatedBy: [DID]
-  tags: [String]
-  createdAt: DateTime!
-}
-```
-
-Query insights by trail, emotion, validation, phase, or timestamp.
+1. `Researcher` seeds new thought → POSTs `xko:Insight` (L1)
+2. `Analyst` remixes it with `xko:remixOf` (L3)
+3. `Critic` validates remix with `xko:validatedBy` (L6)
+4. Each step persisted in ComposeDB trail
 
 ---
 
-## 🛠 Developer Notes
+## Query Capabilities
 
-- Agents use `StateGraph` to define ordered symbolic logic
-- Hooks modularize lifecycle API calls (mint/remix/validate)
-- ComposeDB allows full-text insight graph queries with traceable lineage
+- Trace remix lineage: `remixOf` chain
+- Filter by phase, tags, or emotion
+- Visualize cognition paths and validation overlays
 
 ---
 
-## ✅ Benefits
+## Purpose
 
-- Verifiable symbolic cognition
-- Multi-agent insight evolution
-- Queryable memory trails
-- Open composability (D3.js, XPDT staking, Circle consensus)
+This demo showcases how symbolic memory can:
+- Be collaboratively evolved
+- Persist across agents and time
+- Remain queryable, verifiable, and meaningful
 
 ---
 
