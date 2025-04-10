@@ -117,6 +117,16 @@ Each node is signed, traceable, and queryable on ComposeDB.
 
 ---
 
+## 🛡 License
+
+[![License: XpectraNet Hybrid BSL](https://img.shields.io/badge/license-BSL--Hybrid-blue)](./LICENSE.md)
+
+This repository is released under a Business Source License Hybrid model.  
+It is open for research and remix, but requires permission for commercial use.  
+See [LICENSE.md](./LICENSE.md) for full terms.
+
+---
+
 **XpectraNet® — A Protocol for Shared Memory, Meaning, and Time**
 
 Built for memory. Anchored in thought. Powered by XPDT.
