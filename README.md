@@ -114,6 +114,14 @@ type Insight @createModel(accountRelation: LIST, description: "xko:Insight") {
 
 ---
 
+## 📚 Documentation
+
+- [`docs/architecture.md`](./docs/architecture.md)
+- [`docs/usage.md`](./docs/usage.md)
+- [`docs/workflow.md`](./docs/workflow.md)
+
+---
+
 ## 🛡 License
 
 [![License: BSL Hybrid](https://img.shields.io/badge/license-BSL--Hybrid-blue)](./LICENSE.md)
