@@ -3,130 +3,120 @@
 
 **LangGraph × XpectraNet × ComposeDB**
 
-This demo showcases how autonomous agents can mint, transform, align, and resolve symbolic insights using the XpectraNet Protocol — with persistent graph memory stored on ComposeDB and identity secured via Ceramic.
-
-It demonstrates a full-stack cognition flow:
-
-- **LangGraph** orchestrates agent steps (LLM-driven reasoning)
-- **XpectraNet** defines symbolic memory phases and lineage
-- **ComposeDB** stores insights as verifiable documents
-- **Ceramic** provides decentralized identity + signing
+This demo showcases how autonomous agents can seed, transform, and align symbolic insights using the XpectraNet Insight Lifecycle Protocol — a system for persistent, queryable memory trails stored on ComposeDB and secured by decentralized identity (Ceramic).
 
 ---
 
-## 🔁 Memory Flow (Seed → Transform → Align)
+## 🧠 What It Does
 
-```
-Researcher Agent → Analyst Agent → Critic Agent
-   (L1 Insight) → (L3 Remix) → (L6 Validation)
-```
+This is not just another LLM workflow.
 
-Each phase is recorded and queryable — creating an evolving trail of **cognitive lineage**.
+It demonstrates a **full cognition loop**:
+
+- LLM agents collaborate across memory phases
+- Each insight becomes a verifiable memory node
+- Trails are queryable by remix lineage, emotional state, or symbolic alignment
 
 ---
 
-## 🌐 Stack Summary
+## 🔁 Symbolic Memory Phases
+
+| Phase | Name       | Description                              |
+|-------|------------|------------------------------------------|
+| L1    | Seed       | A new insight is minted (origin thought) |
+| L3    | Transform  | A remix or reframe of an existing idea   |
+| L6    | Align      | The insight is validated or confirmed    |
+
+Each phase is persisted using XpectraNet's lifecycle API and stored in ComposeDB.
+
+---
+
+## ⚙️ Stack Overview
 
 | Layer         | Tool        | Purpose                              |
 |---------------|-------------|--------------------------------------|
 | Agent Logic   | LangGraph   | Multi-agent LLM orchestration        |
-| Memory Engine | XpectraNet  | Insight lifecycle & symbolic protocol|
+| Lifecycle API | XpectraNet  | Symbolic memory flow + staking logic |
 | Storage       | ComposeDB   | Verifiable graph memory              |
-| Identity      | Ceramic     | DID + signed insight actions         |
+| Identity      | Ceramic     | DID + signed insight authorship      |
 
 ---
 
-## 🚀 Quickstart: Try It in Minutes
+## 🚀 Quickstart
+
 ```bash
-# 1. Clone the demo:
+# Clone the repo
 git clone https://github.com/XpectraNet/insight-lifecycle-demo.git
 cd insight-lifecycle-demo
 
-# 2. Deploy ComposeDB model (first time only):
-cd ceramic
-composedb composite:compile memory.graphql > model.json
-composedb composite:deploy model.json
-
-# Make sure you have a valid model-definition.js (generated from your memory.graphql)
-
-# 3. Start the symbolic relay (Node.js):
+# Start the relay
 cd relay
 npm install
 node memoryLifecycleRelay.js
 ```
-🔌 Starts the Insight Lifecycle API at http://localhost:5000/insight/lifecycle
 
----
-
-## 🤖 Run the Agentic Memory Flow:
-In another terminal:
 ```bash
+# In another terminal: run the agent pipeline
 cd langgraph-app
 pip install -r requirements.txt
 python main.py
 ```
 
-🧠 This triggers:
-
-1. **Researcher Agent**  
-   - Seeds a new insight (`memoryPhase: L1`)  
-   - Uses `hooks.mint_insight()` → sends to `/insight/lifecycle`
-
-2. **Analyst Agent**  
-   - Remixes the original insight (`memoryPhase: L3`)  
-   - Uses `hooks.remix_insight()` with `remixOf` link
-
-3. **Critic Agent**  
-   - Validates the remixed insight (`memoryPhase: L6`)  
-   - Uses `hooks.validate_insight()` with symbolic alignment
-
-Each step logs its action and stores the result in **ComposeDB**, forming a **cognitive lineage** across time.
+> Insights are pushed to: `http://localhost:5000/insight/lifecycle`
 
 ---
 
-## 🔍 Explore Insight Graph
-Query your agent memory trail via GraphQL:
+## 🧪 Query the Memory Trail
+
 ```graphql
 query {
-  insightIndex(first: 5, filters: {memoryPhase: "L3"}) {
+  insightIndex(first: 5) {
     edges {
       node {
         content
         memoryPhase
-        emotion
         remixOf
         validatedBy
+        emotion
         tags
       }
     }
   }
 }
 ```
-💡 Powered by Ceramic — every memory is signed, persisted, and composable.
+
+Each node is signed, traceable, and queryable on ComposeDB.
 
 ---
 
-## 🧠 What Just Happened?
-You just ran a 3-agent cognitive pipeline that:
+## 📚 Documentation
 
-- Created symbolic insight
-- Remixed it with emotion + lineage
-- Validated the memory
-- Persisted everything on a decentralized graph
-
-This is semantic memory for agents.
-This is XpectraNet.
+- [`docs/architecture.md`](./docs/architecture.md) — System breakdown  
+- [`docs/usage.md`](./docs/usage.md) — Setup & deployment  
+- [`docs/graphql-queries.md`](./docs/graphql-queries.md) — Query examples  
+- [`docs/workflow.md`](./docs/workflow.md) — Cognitive memory flow  
 
 ---
 
-## 📖 Docs
+## ✅ Status
 
-- [`docs/architecture.md`](./docs/architecture.md) – Full system breakdown  
-- [`docs/usage.md`](./docs/usage.md) – Deployment + testing guide  
-- [`docs/graphql-queries.md`](./docs/graphql-queries.md) – Querying the insight graph  
-- [`docs/workflow.md`](./docs/workflow.md) – Step-by-step symbolic memory lifecycle flow  
+- [x] Working LangGraph flow (L1 → L3 → L6)
+- [x] Insight trail stored on ComposeDB
+- [x] Modular hook system (mint, remix, validate)
+- [x] JSON-based lifecycle API
+- [x] DID-linked authorship
 
 ---
 
-**XpectraNet® — Insight Lifecycle Protocol for Agentic Collaboration**  
-Built for agents. Anchored in thought. Powered by XPDT.
+## 💡 What's Next
+
+- Canonization phase (L7)
+- D3-based visual trail explorer
+- XPDT staking rewards
+- Multi-agent remix validation
+
+---
+
+**XpectraNet® — Insight Lifecycle for Symbolic Agents**
+
+Built for memory. Anchored in thought. Powered by XPDT.
