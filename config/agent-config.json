@@ -1,0 +1,49 @@
+  "@context": "https://xpectranet.org/xko#",
+  "agents": [
+    {
+      "@type": "xko:Originator",
+      "xko:agentId": "did:agent:x0-researcher",
+      "xko:role": "Researcher",
+      "xko:action": "xko:mint",
+      "xko:memoryPhase": "xko:L1",
+      "xko:emotionProfile": [
+        "xko:Curiosity",
+        "xko:Openness"
+      ],
+      "xko:tags": [
+        "xko:seed",
+        "xko:thought"
+      ]
+    },
+    {
+      "@type": "xko:Remixer",
+      "xko:agentId": "did:agent:x0-analyst",
+      "xko:role": "Analyst",
+      "xko:action": "xko:remix",
+      "xko:memoryPhase": "xko:L3",
+      "xko:emotionProfile": [
+        "xko:Exploration",
+        "xko:Tension"
+      ],
+      "xko:tags": [
+        "xko:remix",
+        "xko:transform"
+      ]
+    },
+    {
+      "@type": "xko:Validator",
+      "xko:agentId": "did:agent:x0-critic",
+      "xko:role": "Critic",
+      "xko:action": "xko:validate",
+      "xko:memoryPhase": "xko:L6",
+      "xko:emotionProfile": [
+        "xko:Clarity",
+        "xko:Alignment"
+      ],
+      "xko:tags": [
+        "xko:validate",
+        "xko:refine"
+      ]
+    }
+  ]
+}
