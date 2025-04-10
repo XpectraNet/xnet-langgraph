@@ -15,9 +15,9 @@
 #     → Node.js Relay (ritual-to-compose)
 #     → ComposeDB (Ceramic network)
 
-# Load XKO-aligned agent configuration
-with open("config/agent-config.xko.json") as f:
-    AGENT_CONFIG = {a["xko:role"]: a for a in json.load(f)["agents"]}
+# Load agent configuration with XKO and fallback support
+from utils.load_agent_config import load_agent_config
+AGENT_CONFIG = load_agent_config("config/agent-config.hybrid.json")
 
 # Build symbolic workflow graph
 def build_graph():
