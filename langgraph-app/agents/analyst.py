@@ -1,24 +1,21 @@
-import requests
+from hooks.remix import remix_insight
 import random
-
-RELAY_URL = "http://localhost:5000/insight/lifecycle"
-EMOTIONS = ["Tension", "Skepticism", "Structure"]
 
 def analyst_agent(state):
     print("📘 AnalystAgent is remixing the insight...")
 
-    insight = {
-        "content": f"Building on: {state['content']} — this suggests cognition emerges through structure.",
-        "memoryPhase": "L3",
-        "emotion": random.choice(EMOTIONS),
-        "remixOf": state["insight_id"],
-        "tags": ["structure", "cognition"]
-    }
+    content = f"Building on: {state['content']} — this suggests cognition emerges through structure."
+    emotion = random.choice(["Tension", "Depth", "Expansion"])
+    tags = ["structure", "cognition"]
 
-    res = requests.post(RELAY_URL, json=insight)
-    insight_id = res.json().get("id", "unknown")
+    result = remix_insight(
+        agent_id="did:agent:analyst-002",
+        content=content,
+        emotion=emotion,
+        tags=tags,
+        remix_of=state["insight_id"]
+    )
 
-    print(f"✅ Analyst stored remix L3: {insight_id}")
-    state["insight_id"] = insight_id
-    state["content"] = insight["content"]
+    state["insight_id"] = result.get("id")
+    state["content"] = content
     return state
