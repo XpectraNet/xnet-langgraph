@@ -1,18 +1,20 @@
 # langgraph-app/hooks/mint.py
 import requests
 
-def send_to_ritual_api(insight: dict) -> dict:
+RELAY_URL = "http://localhost:5000/insight/lifecycle"
+
+def mint_insight(agent_id, content, emotion, tags, layer="L1"):
     payload = {
-        "agentId": insight["agent"],
+        "agentId": agent_id,
         "action": "mint",
-        "layer": insight["layer"],
+        "layer": layer,
         "insight": {
-            "content": insight["content"],
-            "emotion": insight["emotion"],
-            "tags": insight["tags"],
+            "content": content,
+            "emotion": emotion,
+            "tags": tags,
             "originType": "XInsight"
         },
         "xpdtStake": 1.0
     }
-    response = requests.post("http://localhost:8080/ritual/mint", json=payload)
+    response = requests.post(RELAY_URL, json=payload)
     return response.json()
