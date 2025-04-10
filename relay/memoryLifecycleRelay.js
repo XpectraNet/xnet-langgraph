@@ -1,83 +1,75 @@
-// memoryLifecycleRelay.js
-// A symbolic relay that receives insight lifecycle events from LangGraph agents
-// and stores them into ComposeDB using Ceramic's GraphQL API
+// memoryLifecycleRelay.js — XKO-compliant relay for symbolic memory lifecycle
+// Accepts POST /insight/lifecycle → transforms XKO JSON-LD into ComposeDB mutation
 
-const express = require('express');
-const { ComposeClient } = require('@composedb/client');
-const { definition } = require('./compose/model-definition.js'); // output from composedb composite:compile
+const express = require("express");
+const bodyParser = require("body-parser");
+const { request } = require("graphql-request");
 
 const app = express();
-const PORT = 5000;
+app.use(bodyParser.json());
 
-// Middleware to parse JSON payloads
-app.use(express.json());
+// ComposeDB GraphQL endpoint (testnet: Clay)
+const GRAPHQL_ENDPOINT = "https://ceramic-clay.3boxlabs.com";
 
-// Initialize ComposeClient
-const compose = new ComposeClient({
-  ceramic: 'https://ceramic-clay.3boxlabs.com', // Ceramic Clay testnet endpoint
-  definition,
-});
+// Simple GraphQL mutation for creating an insight document
+const CREATE_INSIGHT_MUTATION = `
+  mutation CreateInsight($input: CreateInsightInput!) {
+    createInsight(input: $input) {
+      document {
+        id
+        content
+        memoryPhase
+        remixOf
+        validatedBy
+        tags
+        emotion
+        createdAt
+      }
+    }
+  }
+`;
 
-// Optional: you can authenticate DID if needed
-// compose.setDID(...)
-
-
-// POST /insight/lifecycle — receives symbolic insight data
-app.post('/insight/lifecycle', async (req, res) => {
+app.post("/insight/lifecycle", async (req, res) => {
   try {
-    const { agentId, action, layer, insight, xpdtStake } = req.body;
+    const payload = req.body;
 
-    // Basic validation
-    if (!agentId || !action || !layer || !insight || !insight.content) {
-      return res.status(400).json({ error: 'Missing required fields' });
+    // Step 1: Validate that required XKO fields exist
+    if (!payload["xko:content"] || !payload["xko:memoryPhase"] || !payload["xko:createdAt"]) {
+      return res.status(400).json({ error: "Missing required xko fields." });
     }
 
-    // Prepare input payload for ComposeDB
-    const input = {
-      content: insight.content,
-      memoryPhase: layer,
-      emotion: insight.emotion || null,
-      remixOf: insight.remixOf || null,
-      validatedBy: insight.validatedBy || [],
-      tags: insight.tags || [],
-      createdAt: new Date().toISOString(),
+    // Step 2: Normalize the XKO fields for ComposeDB schema
+    const insight = {
+      content: payload["xko:content"],
+      memoryPhase: payload["xko:memoryPhase"],
+      remixOf: payload["xko:remixOf"] || null,
+      validatedBy: payload["xko:validatedBy"] || [],
+      emotion: payload["xko:emotion"] || null,
+      tags: payload["xko:tags"] || [],
+      createdAt: payload["xko:createdAt"]
     };
 
-    // Call the createInsight mutation using ComposeClient
-    const response = await compose.executeQuery(`
-      mutation CreateInsight($input: CreateInsightInput!) {
-        createInsight(input: $input) {
-          document {
-            id
-            content
-            memoryPhase
-            emotion
-          }
-        }
-      }
-    `, { input });
+    // Step 3: Send to ComposeDB
+    const variables = { input: { content: insight } };
+    const result = await request(GRAPHQL_ENDPOINT + "/graphql", CREATE_INSIGHT_MUTATION, {
+      input: { content: insight }
+    });
 
-    // Handle ComposeDB response
-    const created = response?.data?.createInsight?.document;
-    if (!created) {
-      return res.status(500).json({ error: 'Failed to store insight in ComposeDB', details: response });
-    }
-
-    console.log('✅ Insight stored:', created);
-    res.status(201).json({ success: true, id: created.id, memoryPhase: created.memoryPhase });
-
+    // Step 4: Respond with symbolic memory node (as JSON-LD)
+    res.json({
+      "@context": "https://xpectranet.org/xko#",
+      "@type": "xko:Insight",
+      ...payload,
+      id: result?.createInsight?.document?.id || null
+    });
   } catch (err) {
-    console.error('❌ Error in lifecycle handler:', err);
-    res.status(500).json({ error: 'Server error', details: err.message });
+    console.error("Relay error:", err);
+    res.status(500).json({ error: "Relay failed to process memory lifecycle." });
   }
 });
 
-// Health check endpoint
-app.get('/', (req, res) => {
-  res.send('🧠 Insight Lifecycle Relay is live');
-});
-
-// Start the server
+// Start server
+const PORT = 5000;
 app.listen(PORT, () => {
-  console.log(`🚀 Relay listening at http://localhost:${PORT}/insight/lifecycle`);
+  console.log(`🧠 Relay listening at http://localhost:${PORT}/insight/lifecycle`);
 });
