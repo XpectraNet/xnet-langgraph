@@ -32,22 +32,8 @@ Each symbolic act is a valid `xko:Insight` and recorded as a node in the Compose
 
 ## 🧠 Symbolic Memory Phases (XKO)
 
-| Phase | Symbolic Role       | Description                                 |
-|-------|---------------------|---------------------------------------------|
-| L1    | Mint                | New insight is authored                     |
-| L3    | Remix               | Reframed or transformed thought             |
-| L6    | Validation          | Alignment or agreement is reached           |
-
-> This demo walks from L1 → L3 → L6 and loops to L3, simulating symbolic refinement.
-
----
-
-## 🧠 Symbolic Memory Phases
-
-XpectraNet encodes memory into 10 symbolic phases:
-
-| Phase | Role               | Description                                     |
-|-------|--------------------|-------------------------------------------------|
+| Phase | Symbolic Role      | Description                                    |
+|-------|--------------------|------------------------------------------------|
 | L0    | Perception         | Raw input or sensed change                     |
 | L1    | Mint               | New insight is created                         |
 | L2    | Reflection         | Internal resonance or feedback                 |
@@ -59,7 +45,7 @@ XpectraNet encodes memory into 10 symbolic phases:
 | L8    | Archival           | Insight preserved for long-term reference      |
 | L9    | Mythic Integration | Transcends context, becomes symbolic myth      |
 
-> The demo currently moves across **L1 → L3 → L6**, showing how memory is minted, remixed, and validated symbolically.
+> This demo walks from L1 → L3 → L6 and loops to L3, simulating symbolic refinement.
 
 ---
 
