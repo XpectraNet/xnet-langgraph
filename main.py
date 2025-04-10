@@ -1,20 +1,19 @@
 # main.py — XKO-aligned symbolic cognition loop
 # Demonstrates a full L1 → L3 → L6 memory lifecycle using XpectraNet + LangGraph + ComposeDB
-# ┌─────────────────────┐
-# │ LangGraph Agent Flow│
-# └─────────────────────┘
-# Researcher: seed insight → Analyst: transform insight → Critic: validate
+#
+# ┌───────────────────────────────┐
+# │      LangGraph Agent Loop     │
+# └───────────────────────────────┘
+# Researcher (L1): seed insight
+#   → Analyst (L3): transform insight
+#   → Critic (L6): validate
+#   → Analyst (L3): remix again
+#   → ... (loop until complete)
 #
 # Each step pushes symbolic memory to:
-#    POST /insight/lifecycle (Node.js Relay → ComposeDB)
-
-import json
-from langgraph.graph import StateGraph
-
-# Import symbolic agents for each memory phase
-from agents.researcher_agent import researcher_agent  # L1 mint
-from agents.analyst_agent import analyst_agent        # L3 remix
-from agents.critic_agent import critic_agent          # L6 validate
+#   POST /insight/lifecycle
+#     → Node.js Relay (ritual-to-compose)
+#     → ComposeDB (Ceramic network)
 
 # Load XKO-aligned agent configuration
 with open("config/agent-config.xko.json") as f:
@@ -22,7 +21,6 @@ with open("config/agent-config.xko.json") as f:
 
 # Build symbolic workflow graph
 def build_graph():
-    # Initialize a new LangGraph pipeline
     builder = StateGraph()
 
     # Nodes represent memory lifecycle agents
