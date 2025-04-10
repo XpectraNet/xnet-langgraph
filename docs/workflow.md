@@ -52,4 +52,6 @@ Each step calls `POST /insight/lifecycle` via dedicated Python hooks (`mint`, `r
 
 ---
 
-**XpectraNet® — Cognitive Infrastructure for Symbolic Agents**
+**XpectraNet® — A Protocol for Shared Memory, Meaning, and Time**
+
+Built for memory. Anchored in thought. Powered by XPDT.
