@@ -15,12 +15,12 @@ To enable agentic systems to think together — not just by generating responses
 
 ```
 ┌──────────────────┐     Insight Lifecycle API     ┌────────────────────────────┐
-│ LangGraph Agents │ ────────────────────────────▶ │ Insight-to-Compose Relay   │
-│   (LLMs)         │                              │      (Node.js)             │
-└──────────────────┘                              └────────────────────────────┘
-                                                         │
-                                                         ▼
-                                             ComposeDB + Ceramic Network
+│ LangGraph Agents │ ───────—───────────────────▶ │ Insight-to-Compose Relay   │
+│   (LLMs)         │                               │      (Node.js)             │
+└──────────────────┘                               └────────────────────────────┘
+                                                                │
+                                                                ▼
+                                                    ComposeDB + Ceramic Network
 ```
 
 ---
