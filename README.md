@@ -3,7 +3,7 @@
 
 **LangGraph × XpectraNet × ComposeDB**
 
-This demo showcases how autonomous agents can seed, transform, and align symbolic insights using the XpectraNet Insight Lifecycle Protocol — a system for persistent, queryable memory trails stored on ComposeDB and secured by decentralized identity (Ceramic).
+This demo showcases how autonomous agents can seed, transform, and align symbolic insights using the XpectraNet Protocol — a system for persistent, queryable memory trails stored on ComposeDB and secured by decentralized identity (Ceramic).
 
 ---
 
