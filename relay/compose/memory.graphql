@@ -1,0 +1,9 @@
+type Insight @createModel(accountRelation: LIST, description: "Symbolic insight node for XpectraNet lifecycle memory") {
+  content: String!
+  memoryPhase: String!
+  emotion: String
+  remixOf: DID
+  validatedBy: [DID]
+  tags: [String]
+  createdAt: DateTime!
+}
