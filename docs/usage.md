@@ -81,7 +81,6 @@ Compile and deploy the model to Ceramic Clay:
 cd relay/compose
 composedb composite:compile memory.graphql > model.json
 composedb composite:deploy model.json
-composedb composite:codegen model.json --output=./model-definition.js
 ```
 
 Generate the model-definition.js file (used in memoryLifecycleRelay.js):
