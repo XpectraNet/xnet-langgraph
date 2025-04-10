@@ -3,7 +3,7 @@
 
 **LangGraph × XpectraNet × ComposeDB**
 
-This demo showcases how autonomous agents can mint, transform, align, and resolve symbolic insights using the XpectraNet Insight Lifecycle Protocol — with persistent graph memory stored on ComposeDB and identity secured via Ceramic.
+This demo showcases how autonomous agents can mint, transform, align, and resolve symbolic insights using the XpectraNet Protocol — with persistent graph memory stored on ComposeDB and identity secured via Ceramic.
 
 It demonstrates a full-stack cognition flow:
 
@@ -36,25 +36,29 @@ Each phase is recorded and queryable — creating an evolving trail of **cogniti
 
 ---
 
-## 🔧 Quickstart
-
-1. Clone the demo:
+## 🔧 Deploy ComposeDB model (first time only):
 ```bash
+composedb composite:compile memory.graphql > model.json
+composedb composite:deploy model.json
+```
+---
+
+## 🚀 Quickstart: Try It in Minutes
+```bash
+# 1. Clone the demo:
 git clone https://github.com/XpectraNet/insight-lifecycle-demo.git
 cd insight-lifecycle-demo
-```
 
-2. Start the symbolic relay (Node.js):
-```bash
+# 2. Start the symbolic relay (Node.js):
 cd relay
 npm install
 node memoryLifecycleRelay.js
 ```
-
 🔌 Starts the Insight Lifecycle API at http://localhost:5000/insight/lifecycle
+
 ---
 
-3. Run the Agentic Memory Flow:
+## 🤖 Run the Agentic Memory Flow:
 In another terminal:
 ```bash
 cd langgraph-app
@@ -69,20 +73,11 @@ python main.py
 - Agent 3: Aligns it with symbolic weight (L6)
 
 Each step is stored in ComposeDB — creating a verifiable insight trail.
----
-
-4. Deploy ComposeDB model (first time only):
-```bash
-composedb composite:compile memory.graphql > model.json
-composedb composite:deploy model.json
-```
 
 ---
 
-## 🔍 Explore Cognitive Lineage
-
-Query your memory trail using GraphQL:
-
+## 🔍 Explore Insight Graph
+Query your agent memory trail via GraphQL:
 ```graphql
 query {
   insightIndex(first: 5, filters: {memoryPhase: "L3"}) {
@@ -100,6 +95,20 @@ query {
 }
 ```
 💡 Powered by Ceramic — every memory is signed, persisted, and composable.
+
+---
+
+## 🧠 What Just Happened?
+You just ran a 3-agent cognitive pipeline that:
+
+- Created symbolic insight
+- Remixed it with emotion + lineage
+- Validated the memory
+- Persisted everything on a decentralized graph
+
+This is semantic memory for agents.
+This is XpectraNet.
+
 ---
 
 ## 📖 Docs
